@@ -3,11 +3,7 @@ name: Frontend CI
 on:
   push:
     branches:
-      - master
-
-  pull_request:
-    branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -18,16 +14,16 @@ jobs:
         working-directory: frontend
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Install Dependencies
-        run: npm install
+      - run: npm install
 
-      - name: Build React App
-        run: npm run build
+      - name: Create .env
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+
+      - run: npm run build
